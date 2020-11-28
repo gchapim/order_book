@@ -66,4 +66,21 @@ defmodule OrderBook.InstructionTest do
       assert %Instruction{} |> Instruction.changeset(@valid_attrs) |> Map.get(:valid?)
     end
   end
+
+  describe "build/1" do
+    test "invalid attrs" do
+      assert {:error, %Ecto.Changeset{}} = Instruction.build(%{@valid_attrs | price: nil})
+    end
+
+    test "valid attrs" do
+      assert {:ok,
+              %Instruction{
+                instruction: :new,
+                side: :ask,
+                price_level_index: 1,
+                price: 80.0,
+                quantity: 3
+              }} = Instruction.build(@valid_attrs)
+    end
+  end
 end

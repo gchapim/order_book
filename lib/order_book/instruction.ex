@@ -24,4 +24,10 @@ defmodule OrderBook.Instruction do
     |> cast(attrs, @permitted_attrs)
     |> validate_required(@permitted_attrs)
   end
+
+  def build(attrs) do
+    %__MODULE__{}
+    |> changeset(attrs)
+    |> apply_action(:update)
+  end
 end
