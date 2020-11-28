@@ -26,7 +26,8 @@ defmodule OrderBook.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto, "~> 3.5.5"}
+      {:ecto, "~> 3.5.5"},
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 end
