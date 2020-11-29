@@ -3,9 +3,9 @@ defmodule OrderBook.Exchange.Instruction.Shifter do
   Responsible for handling the :new instruction over an Exchange.
   """
 
-  @type exchange_instruction :: %{price: float(), price_level_index: number(), quantity: number()}
+  @behaviour OrderBook.Exchange.Instruction.Operator
 
-  @spec operate(map(), exchange_instruction()) :: map()
+  @impl true
   def operate(stack, %{
         price_level_index: index,
         quantity: quantity,

@@ -4,7 +4,7 @@ defmodule OrderBook.Exchange.InstructionHandler do
   """
 
   alias OrderBook.Instruction
-  alias OrderBook.Exchange.Instruction.{Shifter}
+  alias OrderBook.Exchange.Instruction.{Shifter, Updater}
 
   @type exchange_stack :: %{ask: map(), bid: map()}
 
@@ -16,10 +16,25 @@ defmodule OrderBook.Exchange.InstructionHandler do
   end
 
   defp do_handle(
-         %Instruction{side: side, instruction: :new} = instruction,
+         %Instruction{instruction: :new} = instruction,
          stack
        ) do
-    side_stack = stack |> Map.get(side) |> Shifter.operate(to_exchange_instruction(instruction))
+    apply_operation(instruction, stack, Shifter)
+  end
+
+  defp do_handle(
+         %Instruction{instruction: :update} = instruction,
+         stack
+       ) do
+    apply_operation(instruction, stack, Updater)
+  end
+
+  defp apply_operation(
+         %Instruction{side: side} = instruction,
+         stack,
+         operator
+       ) do
+    side_stack = stack |> Map.get(side) |> operator.operate(to_exchange_instruction(instruction))
 
     %{stack | side => side_stack}
   end
