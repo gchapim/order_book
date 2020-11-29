@@ -4,8 +4,7 @@ A simple Exchange OrderBook application written in Elixir using GenServers.
 
 ## Requisites
 
-- Elixir 1.11
-- OTP (23)
+- Elixir 1.11 (OTP 23.1)
 
 ## Running
 
