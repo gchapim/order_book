@@ -11,6 +11,14 @@ defmodule OrderBook.Instruction do
 
   @permitted_attrs [:instruction, :side, :price_level_index, :price, :quantity]
 
+  @type t :: %__MODULE__{
+          instruction: atom(),
+          side: atom(),
+          price_level_index: number(),
+          price: float(),
+          quantity: number()
+        }
+
   embedded_schema do
     field(:instruction, Ecto.Enum, values: @instruction_options)
     field(:side, Ecto.Enum, values: @side_options)
