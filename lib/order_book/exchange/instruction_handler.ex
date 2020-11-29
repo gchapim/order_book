@@ -6,7 +6,7 @@ defmodule OrderBook.Exchange.InstructionHandler do
   alias OrderBook.{Exchange, Instruction}
   alias OrderBook.Exchange.Instruction.{Remover, Shifter, Updater}
 
-  @spec handle(Instruction.t(), Exchange.stack()) :: map() | {:error, Ecto.Changeset.t()}
+  @spec handle(Instruction.t(), Exchange.stack()) :: map() | {:error, any()}
   def handle(
         %Instruction{instruction: :new} = instruction,
         stack
