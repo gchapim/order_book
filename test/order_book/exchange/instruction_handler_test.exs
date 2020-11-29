@@ -66,7 +66,33 @@ defmodule OrderBook.Exchange.InstructionHandlerTest do
     end
   end
 
+  describe "delete" do
+    setup :delete
+
+    test "handle/2 with ask", %{instruction: instruction} do
+      assert %{
+               bid: @bid_stack,
+               ask: %{}
+             } = InstructionHandler.handle(%{instruction | price_level_index: 1}, @stack)
+    end
+
+    test "handle/2 with bid", %{instruction: instruction} do
+      assert %{
+               ask: @ask_stack,
+               bid: %{}
+             } =
+               InstructionHandler.handle(
+                 %{instruction | side: :bid, price_level_index: 1},
+                 @stack
+               )
+    end
+  end
+
   defp update(context) do
     put_in(context, [:instruction, :instruction], :update)
+  end
+
+  defp delete(context) do
+    put_in(context, [:instruction, :instruction], :delete)
   end
 end

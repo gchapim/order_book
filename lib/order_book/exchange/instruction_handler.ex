@@ -4,7 +4,7 @@ defmodule OrderBook.Exchange.InstructionHandler do
   """
 
   alias OrderBook.Instruction
-  alias OrderBook.Exchange.Instruction.{Shifter, Updater}
+  alias OrderBook.Exchange.Instruction.{Remover, Shifter, Updater}
 
   @type exchange_stack :: %{ask: map(), bid: map()}
 
@@ -27,6 +27,13 @@ defmodule OrderBook.Exchange.InstructionHandler do
          stack
        ) do
     apply_operation(instruction, stack, Updater)
+  end
+
+  defp do_handle(
+         %Instruction{instruction: :delete} = instruction,
+         stack
+       ) do
+    apply_operation(instruction, stack, Remover)
   end
 
   defp apply_operation(

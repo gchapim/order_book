@@ -11,10 +11,8 @@ defmodule OrderBook.Exchange.Instruction.Updater do
         quantity: quantity,
         price: price
       }) do
-    try do
-      Map.replace!(stack, index, %{quantity: quantity, price: price})
-    rescue
-      KeyError -> {:error, :not_found}
-    end
+    Map.replace!(stack, index, %{quantity: quantity, price: price})
+  rescue
+    KeyError -> {:error, :not_found}
   end
 end
