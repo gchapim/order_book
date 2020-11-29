@@ -62,8 +62,29 @@ defmodule OrderBook.InstructionTest do
                %Instruction{} |> Instruction.changeset(attrs) |> errors_on()
     end
 
+    test ":delete missing side" do
+      attrs = %{@valid_attrs | side: nil, instruction: :delete}
+
+      assert %{side: ["can't be blank"]} =
+               %Instruction{} |> Instruction.changeset(attrs) |> errors_on()
+    end
+
+    test ":delete missing price_level_index" do
+      attrs = %{@valid_attrs | price_level_index: nil, instruction: :delete}
+
+      assert %{price_level_index: ["can't be blank"]} =
+               %Instruction{} |> Instruction.changeset(attrs) |> errors_on()
+    end
+
     test "valid attrs" do
       assert %Instruction{} |> Instruction.changeset(@valid_attrs) |> Map.get(:valid?)
+    end
+
+    test "delete valid attrs" do
+      attrs =
+        @valid_attrs |> Map.take([:side, :price_level_index]) |> Map.put(:instruction, :delete)
+
+      assert %Instruction{} |> Instruction.changeset(attrs) |> Map.get(:valid?)
     end
   end
 

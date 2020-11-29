@@ -30,6 +30,16 @@ defmodule OrderBook.Instruction do
   def changeset(instruction, attrs \\ %{}) do
     instruction
     |> cast(attrs, @permitted_attrs)
+    |> validate()
+  end
+
+  defp validate(%Ecto.Changeset{changes: %{instruction: :delete}} = changeset) do
+    changeset
+    |> validate_required([:price_level_index, :side])
+  end
+
+  defp validate(changeset) do
+    changeset
     |> validate_required(@permitted_attrs)
   end
 
