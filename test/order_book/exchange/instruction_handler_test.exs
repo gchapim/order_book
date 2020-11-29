@@ -2,8 +2,9 @@ defmodule OrderBook.Exchange.InstructionHandlerTest do
   use ExUnit.Case, async: true
 
   alias OrderBook.Exchange.InstructionHandler
+  alias OrderBook.Instruction
 
-  @instruction_attrs %{
+  @instruction_attrs %Instruction{
     instruction: :new,
     side: :ask,
     price_level_index: 2,
@@ -21,11 +22,6 @@ defmodule OrderBook.Exchange.InstructionHandlerTest do
 
   setup do
     %{instruction: @instruction_attrs}
-  end
-
-  test "handle/2 validates instruction" do
-    assert {:error, %Ecto.Changeset{}} =
-             InstructionHandler.handle(%{}, %{@instruction_attrs | instruction: nil})
   end
 
   describe "new" do
@@ -89,10 +85,16 @@ defmodule OrderBook.Exchange.InstructionHandlerTest do
   end
 
   defp update(context) do
-    put_in(context, [:instruction, :instruction], :update)
+    put_in_instruction(context, :update)
   end
 
   defp delete(context) do
-    put_in(context, [:instruction, :instruction], :delete)
+    put_in_instruction(context, :delete)
+  end
+
+  defp put_in_instruction(context, instruction_value) do
+    Map.update!(context, :instruction, fn instruction ->
+      %Instruction{instruction | instruction: instruction_value}
+    end)
   end
 end

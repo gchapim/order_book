@@ -11,9 +11,10 @@ defmodule OrderBook.Exchange.Instruction.Shifter do
         quantity: quantity,
         price: price
       }) do
-    stack
-    |> shift(index, Map.get(stack, index))
-    |> Map.put(index, %{quantity: quantity, price: price})
+    {:ok,
+     stack
+     |> shift(index, Map.get(stack, index))
+     |> Map.put(index, %{quantity: quantity, price: price})}
   end
 
   def shift(map, _, nil), do: map

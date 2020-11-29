@@ -10,7 +10,7 @@ defmodule OrderBook.Exchange.Instruction.ShifterTest do
   }
 
   test "operate/2 :new instruction with empty stack" do
-    assert %{2 => %{quantity: 20, price: 70.0}} = Shifter.operate(%{}, @instruction_attrs)
+    assert {:ok, %{2 => %{quantity: 20, price: 70.0}}} = Shifter.operate(%{}, @instruction_attrs)
   end
 
   test "operate/2 :new instruction with colliding price levels" do
@@ -22,21 +22,24 @@ defmodule OrderBook.Exchange.Instruction.ShifterTest do
           quantity: index,
           price: 2.0
         })
+        |> elem(1)
       end)
       |> Shifter.operate(%{
         price_level_index: 7,
         quantity: 7,
         price: 2.0
       })
+      |> elem(1)
 
-    assert %{
-             2 => %{price: 2.0, quantity: 2},
-             3 => %{price: 10.0, quantity: 10},
-             4 => %{price: 2.0, quantity: 3},
-             5 => %{price: 2.0, quantity: 4},
-             6 => %{price: 2.0, quantity: 5},
-             7 => %{price: 2.0, quantity: 7}
-           } =
+    assert {:ok,
+            %{
+              2 => %{price: 2.0, quantity: 2},
+              3 => %{price: 10.0, quantity: 10},
+              4 => %{price: 2.0, quantity: 3},
+              5 => %{price: 2.0, quantity: 4},
+              6 => %{price: 2.0, quantity: 5},
+              7 => %{price: 2.0, quantity: 7}
+            }} =
              Shifter.operate(map, %{
                price_level_index: 3,
                quantity: 10,

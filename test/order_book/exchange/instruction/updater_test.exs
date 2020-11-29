@@ -10,13 +10,14 @@ defmodule OrderBook.Exchange.Instruction.UpdaterTest do
   }
 
   test "operate/2 instruction with empty stack" do
-    assert {:error, :not_found} = Updater.operate(%{}, @instruction_attrs)
+    assert {:error, [not_found: 2]} = Updater.operate(%{}, @instruction_attrs)
   end
 
   test "operate/2 instruction with existing price level" do
-    assert %{
-             2 => %{price: 10.0, quantity: 10}
-           } =
+    assert {:ok,
+            %{
+              2 => %{price: 10.0, quantity: 10}
+            }} =
              Updater.operate(%{2 => @instruction_attrs}, %{
                price_level_index: 2,
                quantity: 10,

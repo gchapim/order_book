@@ -9,9 +9,10 @@ defmodule OrderBook.Exchange.Instruction.Remover do
   def operate(stack, %{
         price_level_index: index
       }) do
-    stack
-    |> Map.delete(index)
-    |> shift_down(index, Map.get(stack, index + 1))
+    {:ok,
+     stack
+     |> Map.delete(index)
+     |> shift_down(index, Map.get(stack, index + 1))}
   end
 
   def shift_down(map, index, nil), do: Map.delete(map, index)

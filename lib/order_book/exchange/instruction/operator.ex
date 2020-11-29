@@ -8,5 +8,5 @@ defmodule OrderBook.Exchange.Instruction.Operator do
           delete_instruction()
           | %{price: float(), price_level_index: number(), quantity: number()}
 
-  @callback operate(map(), exchange_instruction()) :: map()
+  @callback operate(map(), exchange_instruction()) :: {:ok, map()} | {:error, any()}
 end
