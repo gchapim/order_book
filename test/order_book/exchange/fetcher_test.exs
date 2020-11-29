@@ -3,6 +3,8 @@ defmodule OrderBook.Exchange.FetcherTest do
 
   alias OrderBook.Exchange.Fetcher
 
+  doctest Fetcher
+
   @order_book %{
     ask: %{
       1 => %{price: 1.0, quantity: 1},

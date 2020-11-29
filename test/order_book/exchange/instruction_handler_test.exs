@@ -4,6 +4,8 @@ defmodule OrderBook.Exchange.InstructionHandlerTest do
   alias OrderBook.Exchange.InstructionHandler
   alias OrderBook.Instruction
 
+  doctest InstructionHandler
+
   @instruction_attrs %Instruction{
     instruction: :new,
     side: :ask,

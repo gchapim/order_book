@@ -1,11 +1,28 @@
 defmodule OrderBook.Exchange.InstructionHandler do
   @moduledoc """
-  Module responsible for validating and instruction and handling it.
+  Module responsible for handling instructions.
   """
 
   alias OrderBook.{Exchange, Instruction}
   alias OrderBook.Exchange.Instruction.{Remover, Shifter, Updater}
 
+  @doc """
+  Applies instruction to given stack. It supports :delete, :new and :update instructions.
+
+  ## Examples
+
+    iex> InstructionHandler.handle(
+    ...>   %OrderBook.Instruction{
+    ...>     instruction: :new,
+    ...>     side: :ask,
+    ...>     price_level_index: 1,
+    ...>     price: 10.0,
+    ...>     quantity: 20
+    ...>   },
+    ...>   %{ask: %{}, bid: %{}}
+    ...> )
+    %{ask: %{1 => %{quantity: 20, price: 10.0}}, bid: %{}}
+  """
   @spec handle(Instruction.t(), Exchange.stack()) :: map() | {:error, any()}
   def handle(
         %Instruction{instruction: :new} = instruction,
