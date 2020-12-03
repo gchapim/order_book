@@ -31,6 +31,8 @@ defmodule OrderBook.Exchange do
   @spec send_instruction(pid, map()) :: :ok | {:error, Ecto.Changeset.t()}
   def send_instruction(pid, instruction) do
     with {:ok, %Instruction{} = instruction} <- Instruction.build(instruction) do
+      # We use cast here just for learning purposes. It would more appropriate
+      # to use `GenServer.call` since we "answer back" in case of error later.
       GenServer.cast(pid, {:send_instruction, instruction})
     end
   end
@@ -53,7 +55,6 @@ defmodule OrderBook.Exchange do
   end
 
   defp do_handle_cast({:error, _} = error, old_stack) do
-    # We could send it to the caller if it was ready to receive it
     IO.puts(inspect(error))
 
     {:noreply, old_stack}
